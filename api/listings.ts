@@ -47,9 +47,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     res.status(200).json(data.data.search.listings.listings);
-  } catch (error) {
-    console.error("❌ Fout bij ophalen:", error);
-    res.status(500).json({ error: 'Serverfout bij ophalen Autoscout24 listings' });
-  }
+} catch (error: any) {
+  console.error("❌ Fout bij ophalen:", error);
+  res.status(500).json({ error: error?.message || 'Onbekende fout' });
+}
 }
 
