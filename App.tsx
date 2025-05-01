@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 
-const GET_LISTINGS = gql\`
+const GET_LISTINGS = gql`
   query {
     search {
       listings(locale: nl_BE, metadata: { page: 1 }) {
