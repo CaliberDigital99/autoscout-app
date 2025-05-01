@@ -1,5 +1,4 @@
 import { gql, useQuery } from '@apollo/client';
-
 const GET_LISTINGS = gql`
   query {
     search {
@@ -11,6 +10,9 @@ const GET_LISTINGS = gql`
               make { formatted }
               model { formatted }
             }
+            condition {
+              mileageInKm { formatted }
+            }
           }
           prices {
             public {
@@ -21,7 +23,7 @@ const GET_LISTINGS = gql`
       }
     }
   }
-\`;
+`;
 
 type Listing = {
   id: string;
@@ -29,6 +31,9 @@ type Listing = {
     classification: {
       make: { formatted: string };
       model: { formatted: string };
+    };
+    condition: {
+      mileageInKm: { formatted: string };
     };
   };
   prices: {
@@ -49,11 +54,13 @@ export default function App() {
   return (
     <div>
       {listings.map((listing) => (
-        <div key={listing.id}>
+        <div key={listing.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
           <h3>{listing.vehicle.classification.make.formatted} {listing.vehicle.classification.model.formatted}</h3>
           <p>Prijs: {listing.prices.public.amountInEUR.formatted}</p>
+          <p>Kilometerstand: {listing.vehicle.condition.mileageInKm.formatted}</p>
         </div>
       ))}
     </div>
   );
 }
+
