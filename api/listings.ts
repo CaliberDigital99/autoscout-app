@@ -34,15 +34,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Basic ${auth}`
+        Authorization: `Basic ${auth}`
       },
       body: JSON.stringify({ query })
     });
 
     const data = await response.json();
+
+    if (!data || !data.data || !data.data.search || !data.data.search.listings) {
+      console.error("❌ Ongeldige API-response:", JSON.stringify(data));
+      return res.status(500).json({ error: 'Ongeldige API-response van Autoscout24' });
+    }
+
     res.status(200).json(data.data.search.listings.listings);
   } catch (error) {
-    console.error('Error fetching listings:', error);
-    res.status(500).json({ error: 'Failed to fetch listings' });
+    console.error("❌ Fout bij ophalen:", error);
+    res.status(500).json({ error: 'Serverfout bij ophalen Autoscout24 listings' });
   }
 }
+
